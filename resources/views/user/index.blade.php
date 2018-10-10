@@ -56,7 +56,7 @@
                         <tr align="center">
                             <th>First name</th>
                             <th>Last name</th>
-                            <th>Nickname</th>
+                            <th>Nicknames</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
