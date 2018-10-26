@@ -31,7 +31,7 @@
     <div class="position-ref full-height">
         <div class="">
             <nav class="navbar-dark bg-dark">
-              <a class="btn btn-link " href="" role="button" >
+              <a class="btn btn-link " href="javascript:history.back()" role="button" >
                <h1>Back</h1>
            </a>
        </nav>

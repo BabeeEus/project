@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
-    protected $filable=['fname','lname','nname'];
+     protected $filable=['fname','lname','nname'];
+     protected $table='users';
+     public $primaryKey = 'id';
 }

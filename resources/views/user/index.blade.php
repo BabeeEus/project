@@ -1,92 +1,138 @@
+
 <!doctype html>
 <html lang="ed">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <title>จัดการข้อมูล</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-
-    <!-- Styles -->
+    @include('user.script') 
     <style>
-    html, body {
-        background-color: #fff;
-        color: #636b6f;
-        font-family: 'Nunito', sans-serif;
-        font-weight: 200;
-        height: 100vh;
-        margin: 0;
-    }
     .content {
         text-align: center;
     }
 </style>
 </head>
 <body>
-    <div class="position-ref full-height">
-        <div class="">
-            <nav class="navbar-dark bg-dark">
-              <a class="icon glyphicon glyphicon-remove " href="javascript:history.back()" role="button" >
-               <h1>Back</h1>
-           </a>
-       </nav>
-       <div class="title" align="center">
-        <br/>
-        <h3 align="center">จัดการข้อมูล</h3>
+ <header>
+     <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="javascript:history.back()">
+            Back
+        </a>
     </div>
-    <div class="row">
-        <div class="col-md-2 "></div>
-        <div class="col-md-8 ">
-            <div align="center">
-                <div align="right">
-                    <a href="{{route('user.create')}}" class="btn btn-success" >เพิ่มข้อมูล</a></div>
+</div>
+</nav>
+</header>
+<div class="position-ref full-height">
+    <div class="">
+        <div class="title" align="center">
+            <br/>
+            <h1 align="center">จัดการข้อมูล</h1>
+            <br/>
+        </div>
+        <div class="row">
+            <div class="col-md-1 "></div>
+            <div class="col-md-10 ">
+                <div align="center">
+                    <div align="right">
+                        <button class="btn btn-success" data-toggle="modal" data-target="#myModal">เพิ่มข้อมูล</button> 
+                        <a href="{{ URL::to('export') }}" class="btn btn-success" >Emport To Excel</a>
+                    </div>
                     <br/>
                     @if(\Session :: has('success'))
                     <div class="alert alert-success">
                         <p>{{\Session::get('success')}}</p>
-
                     </div>
                     @endif
-                    <table class="table table-bordered table-striped">
-                        <tr align="center">
-                            <th>First name</th>
-                            <th>Last name</th>
-                            <th>Nicknames</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                        @foreach($users as $row)
-                        <tr>
-                            <td> {{$row['fname']}}</td>
-                            <td> {{$row['lname']}} </td>
-                            <td> {{$row['nname']}}</td>
-
-                            <td align="center">  <a href="{{action('HelloControler@edit',$row['id'])}}" class="btn btn-warning">Edit</a></td>
-
-                            <td align="center">  
-                                <form method="post" class="delete_form" action="{{action('HelloControler@destroy',$row['id'])}}">
-                                    {{csrf_field()}}
-                                    <input type="hidden" name="_method" value="DELETE" />
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </table>
                 </div>
-            </div>
-            <div class="col-md-2 "></div>
-        </div>
-    </div>
-</div>
+                <form method="POST" id="search-form" class="form-inline" role="form">
 
+                    <div class="form-group">
+                        <label for="fname">First name</label>
+                        <input type="text" class="form-control" name="fname" id="fname" placeholder="Search First name">
+                    </div>
+                    <div class="form-group">
+                        <label for="fname">Last name</label>
+                        <input type="text" class="form-control" name="lname" id="lname" placeholder="Search Last name">
+                    </div>
+                    <div class="form-group">
+                        <label for="nname">Nickname</label>
+                        <input type="text" class="form-control" name="nname" id="nname" placeholder="search Nickname">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+                <br/><br/>
+                <form method="POST" enctype="multipart/form-data" id="import-form" action="{{ URL::to('import') }}"class="form-inline" role="form">{{csrf_field()}}
+                    <div class="form-group">
+                        <label for="exampleInputFile">File import</label>
+                        <input type="file" id="file" name="file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                <br/>
+                <table id="users-table" class="table table-striped">
+                    <thead>
+                        <div class="row" >
+                            <tr >
+                             <th class=".col-md-1">No</th>
+                             <th>First name</th>
+                             <th>Last name</th>
+                             <th>Nick name</th>
+                             <th>Action</th>
+                         </tr>
+                     </div>
+                 </thead>
+             </table>
+             @include('user.add') 
+             @include('user.edit1') 
+         </div>
+     </div>
+ </div>
+</div>
 </body>
-</html>
+<script type="text/javascript">
+
+    function btn_edit(id)
+    { 
+        $.ajax({
+            url:"{{ URL::to('et') }}"+'/'+id,
+            method:'get',
+            success:function(data){
+                console.log(data.result)
+                $('#id').val(data.result.id);
+                $('#fnames').val(data.result.fname);
+                $('#lnames').val(data.result.lname);
+                $('#nnames').val(data.result.nname);
+
+            }
+        })
+    }
+    var oTable = $('#users-table').DataTable({
+        processing: true,
+        serverSide: true,
+        "searching": false, // ลบปุ่ม search ออกจาก Datable
+        ajax:{
+          url: 'http://localhost:8000/select/get_datatable',
+
+          data: function (d) {
+            d.fname = $('input[name=fname]').val();
+            d.lname = $('input[name=lname]').val();
+            d.nname = $('input[name=nname]').val();
+        }
+    },
+    columns: [
+    {data: 'id', name: 'id'},
+    {data: 'fname', name: 'fname'},
+    {data: 'lname', name: 'lname'},
+    {data: 'nname', name: 'nname'},
+        {data: 'action', name: 'action'}//,"searchable": false
+        ]
+    });
+    $('#search-form').on('submit', function(e) {
+        oTable.draw();
+        e.preventDefault();
+    });
+
+</script>
 <script type="text/javascript">
     $(document).ready(function(){$('.delete_form').on('submit',function(){
         if(confirm("คุณต้องการลบข้อมูลหรือไม่ (?-?)")){

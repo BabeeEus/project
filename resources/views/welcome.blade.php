@@ -1,78 +1,61 @@
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Laravel</title>
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+<head>
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
 
-            .full-height {
-                height: 100vh;
-            }
+    @include('user.script') 
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+    <style>
+    .content {
+        text-align: center;
+    }
 
-            .position-ref {
-                position: relative;
-            }
+    .title {
+        font-size: 84px;
+    }
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+    .links > a {
+        color: #636b6f;
+        padding: 0 25px;
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: .1rem;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
 
-            .content {
-                text-align: center;
-            }
+    .m-b-md {
+        margin-bottom: 30px;
+    </style>
+</head>
+<body>
+    <div class="flex-center position-ref full-height">
+        <div class="content">
+            <div class="title m-b-md">
+                จัดการข้อมูล
+            </div>
+            <div class="links">
+                <a href="{{route('user.create')}}">เพิ่มข้อมูล</a>
+                <a href="{{route('user.index')}}">ดูข้อมูล</a>
+            </div>
+            <br/>   <br/>
+            <div class="row">
+               @foreach($users as $row)
+               <div class="card">
+                   <div class="card-body">
+                    <div class="card col-lg-2">
+                        <img class="rounded-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
+                        <h2>{{$row->nname}}</h2>
+                        <p>{{$row->fname}}  {{$row->lname}}</p>
 
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 24px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            <div class="content">
-                <div class="title m-b-md">
-                    จัดการข้อมูล
-                </div>
-                <div class="links">
-                     <a href="{{route('user.create')}}" class="btn btn-success" >เพิ่มข้อมูล</a>
-                    <a href="{{route('user.index')}}">ดูข้อมูล</a>
-                   </div>
+                    </div>
                 </div>
             </div>
+            @endforeach
         </div>
-    </body>
+    </div>
+</div>
+
+</body>
 </html>
+
